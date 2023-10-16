@@ -12,14 +12,14 @@ redirect_from:
 Download my most recent CV [here](https://zfy0314.github.io/files/Gavin_CV_10112023.pdf) (updated: Oct 2023)
 
 Education
-======
+------
 * **B.S. in Artificial Intelligence, Carnegie Mellon University**, 2024 (expected)
     * QPA: 4.0/4.0
     * Additional major in Cognitive Science
     * Thesis (work in progress): Incorporating Instructive Feedback in Human-AI Interaction
 
 Research Experience
-======
+------
 * [Feb. 2021 - Present] **Reliable Autonomous Systems Lab, Carnegie Mellon University**
     * Advisor: Prof. Reid Simmons
     * Cognitive agents for personalization in household tasks
@@ -34,18 +34,19 @@ Research Experience
     * Multi-object tracking test time augmentation
 
 Teaching Experience
-======
+------
 (_* denotes head TA_)
+
 * **CMU 15-281 Artificial Intelligence: Representation and Problem Solving**
     * Instructors: Prof. Stephanie Rosenthal, Prof. Vince Conitzer, Prof. Aditi Raghunathan
-    * Fall 2022, Spring 2023, Fall 2023<sup>*</sup>
+    * Fall 22, Spring 23, Fall 23\*
 
 * **CMU 07-180 Concepts in Artificial Intelligence**
     * Instructor: Prof. Reid Simmons
-    * Spring 2022, Spring 2023<sup>*</sup>, Spring 2024<sup>*</sup>
+    * Spring 22, Spring 23\*, Spring 24\*
 
 Selected Awards and Honors
-======
+------
 * **Summer Undergraduate Research Fellowship**, Carnegie Mellon University
 * **Member**, Psi Chi, The International Honor Society in Psychology
 * **Summer@EPFL Research Fellowship**, École Polytechnique Fédérale de Lausanne (EPFL)
