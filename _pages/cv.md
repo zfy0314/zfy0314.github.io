@@ -9,5 +9,5 @@ redirect_from:
 
 {% include base_path %}
 
-Download my most recent CV [here](https://zfy0314.github.io/files/Gavin_CV_10112023.pdf) (updated: Oct 2023)
+Download my most recent CV [here](../files/Gavin_CV_10112023.pdf) (updated: Oct 2023)
 
