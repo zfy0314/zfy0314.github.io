@@ -1,0 +1,166 @@
+---
+layout: archive
+title: "Research"
+permalink: /research/
+author_profile: true
+---
+
+{% include base_path %}
+
+<p><i>You can find my publications on <a href="https://scholar.google.com/citations?user=dpJU4IcAAAAJ&hl=en">my Google Scholar Profile</a></i></p>
+
+<h2>Overview</h2>
+
+<p>
+I am interested in developing AI agents (and/or robots) that can collaborate coherently with humans.
+Currently, I am working on two of the core problems:
+</p>
+<ol>
+    <li> <i>Persistent</i> and <i>interpretable</i> policy updates based on human feedback (how AI agents can <i><b>adapt</b></i> to humans) </li>
+    <li> Human behavior modeling (how AI agents can <i><b>understand</b></i> humans) </li>
+</ol>
+
+<p>
+I believe these two problems complement each other (representing the explicit and implicit communications from the human to the agent respectively) and are fundamental to human-AI / human-robot interaction. Many other open questions in algorithmic human-robot interaction can be reduced to them. For example:
+</p>
+<ol>
+    <li><b>End-user programming</b>: It is essentially humans using <b>commands as feedback</b> to update the agents' policy. </li>
+    <li><b>Human-agent mutual adaptation</b>: Joint adaptation is complicated as the agent has to learn the task, the human's policy, the human's current belief of the agent... An easier alternative is to have the agent reveal its current policy, let the human decide how the work should be split, and assign the agent's role through policy adaptation.</li>
+    <li><b>Objective alignment</b>: As it is extremely challenging to fully specify the <i>intrinsic</i> objective function of the human in one go, it is easier to <b>iteratively adapt the policy</b> of the AI agent to align with the human's true objective.</li>
+    <li><b>Safety</b>: Persistency entails no repeated mistakes (safety in seen environments), and interpretability enables formal verifications of the agent's policy (safety in unseen environments).</li>
+</ol>
+
+<p>
+To solve the first problem, I aim to draw inspiration from the cognition level (not neuron level!) of human intelligence to inform the design of AI agents.
+At the moment I am particularly interested in the use of <b>Cognitive Architectures</b> with the help of <i>Large Language Models</i>.
+<p>
+
+<p>
+To solve the second problem, I have accumulated experience with different deep learning backbones (e.g., multi-modal transformers, random forest, etc.) and feature engineering methods.
+<p>
+
+<h2>Projects</h2>
+
+<font size="5em">
+<table
+    style="width: 100%; border: none;"
+    cellspacing="0"
+    cellpadding="0"
+    style="border-collapse: collapse; border-spacing: 0;"
+    >
+    <tr></tr> <!-- ignore header -->
+
+    <tr>
+        <td colspan="2">
+            <b>[Policy Adaptation] [Honors Undergrad Thesis] Incorporating Instructive Feedback in Human-AI Collaboration</b><br>
+            <span style="font-size:0.9em;">
+                [AAAI 2024 under 2nd phase review]
+                [<a href="https://zfy0314.github.io/files/thesis_poster_04282023.pdf">poster</a>]
+                [<a href="https://youtu.be/5_6ujpwyREU">3 Minutes Thesis</a>]
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 30%;">
+            <img src="../images/aaai2024.png" alt="a diagram of a cognitive agent" />
+        </td>
+        <td>
+            Cognitive architectures support one-shot persistent updates, systematic generalization, and interpretability.
+            However, most previous work relies on hand-coded production rules, limiting their application.
+            In this work, we already utilized the code-generating capability of GPT-4 to automatically generate a cognitive agent.
+            For the next step, we will exploit the production system in cognitive architectures to allow the users to update the agent's policy to suit their own preferences.
+        </td>
+    </tr>
+
+
+    <tr>
+        <td colspan="2">
+            <br><b>[Human Modeling] Home-based Stroke Patients Functional Evaluation</b><br>
+            <span style="font-size:0.9em;">
+                [<a href="../files/stroke_summary.pdf">slides</a>]
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 30%;">
+            <img src="../images/stroke.jpg" alt="motion capture curves of a stroke patient" />
+        </td>
+        <td>
+            Many stroke-induced behaviors are local and action-agnostic.
+            Healthy subjects do not demonstrate stroke-induced behaviors but the parts of the motion of a stroke patient may be the same as a healthy subject.
+            Based on these two insights, we developed a local feature descriptor using the weakly labeled trajectory of stroke and healthy patients.
+            This provides a more detailed functional evaluation of what specific motion is difficult for the stroke patient and what type of tasks they might have trouble doing.
+            It also shows some activity of daily living is more suitable to be used for evaluation than others.
+            Additionally, we also built an LSTM model to regress the Fugl Meyer assessment of the patient yielding 88% accuracy compared to trained physical therapists.
+        </td>
+    </tr>
+
+
+    <tr>
+        <td colspan="2">
+            <br><b>[Policy Adaptation] Rapid Adaptation to Human Partners in Hanabi</b><br>
+            <span style="font-size:0.9em;">
+                [<a href="https://github.com/zfy0314/Hanabi-HumanAI">code</a>]
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 30%;">
+            <img src="../images/hanabi.png" alt="interface for the board game Hanabi" />
+        </td>
+        <td>
+            There are multiple equilibria in the cooperative board game Hanabi, and it is important for the two players to commit to the same strategy / convention.
+            We fist built a library of potential human-like strategies using decision trees and reward-based backbones.
+            Then we used Bayesian inference to estimate the partner's strategy and match it with the most compatible strategy in the library.
+            We showed that this approach can reliably estimate the partner's general strategy within a few turns in the game.
+            This can be applied to other tasks where the agent needs to implicitly estimate the convetions of the human partner.
+        </td>
+    </tr>
+
+
+    <tr>
+        <td colspan="2">
+            <br><b>[Human Modeling] Action Anticipation in Ego-centric Kitchen Videos</b><br>
+            <span style="font-size:0.9em;">
+                [<a href="../files/action_anticipation.pdf">report</a>]
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 30%;">
+            <img src="../images/epic.jpg" alt="four picture showing some kitchen tasks" />
+        </td>
+        <td>
+            Action anticipation aims to predict human behavior in the immediate future given some past observations.
+            Yet the current mainstream encoder-decoder approach does not yield good performance due to two main challenges:
+            1) how to align the action space with the observation space, and 2) how to represent different hierarchies of actions.
+            We proposed to explicitly encode the pre-/post-condition of actions which helps constraints the space for potential future actions.
+            This partially inspired my future work in cognitive agents.
+        </td>
+    </tr>
+
+
+    <tr>
+        <td colspan="2">
+            <br><b>[Human Modeling] Pedestrian Tracking Test Time Augmentation</b><br>
+            <span style="font-size:0.9em;">
+                [<a href="https://openaccess.thecvf.com/content_CVPR_2020/html/Huang_SQE_a_Self_Quality_Evaluation_Metric_for_Parameters_Optimization_in_CVPR_2020_paper.html">CVPR 2020</a>]
+                [<a href="https://youtu.be/7JTCqv6vKC0?si=p8zROLS80muNON5z">video</a>]
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td style="width: 30%;">
+            <img src="../images/cvpr2020.jpg" alt="diagram of three pedestrian trajectories" />
+        </td>
+        <td>
+            Visual consistency within a trajectory and between trajectories reflects the quality of a tracking algorithm output.
+            Based on this simple observation, we designed an evaluation metric for parameter optimization without the need for ground truth annotations.
+            This allows any tracking algorithm to be further fine-tuned to the specific environment after being deployed.
+            We showed a 5.8% performance increase with this test time augmentation technique without modifying the tracking algorithm itself.
+            This is useful when the conditions (lighting, pedestrain walking speed, etc.) in the deployed environment is very different from the training set.
+        </td>
+    </tr>
+
+</table>
+</font>
