@@ -21,7 +21,7 @@ repository               : "zfy0314/zfy0314.github.io"
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "profile.png"
+  avatar           : "gavin_profile.jpg"
   name             : "Gavin Zhu"
   pronouns         : # example: "she/her"
   bio              : "PhD Student in Robotics\nat Carnegie Mellon University"
