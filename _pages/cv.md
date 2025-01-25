@@ -9,18 +9,22 @@ redirect_from:
 
 {% include base_path %}
 
-Download my most recent CV [here](../files/Gavin_CV_12112023.pdf) (updated: Dec 2023)
+Download my most recent CV [here](../files/Gavin_CV_01252025.pdf) (updated: Jan 2025)
 
 Education
 ------
-* **B.S. in Artificial Intelligence, Carnegie Mellon University**, 2024 (expected)
+* **Ph.D in Robotics, Carnegie Mellon University**, 2024
+    * Adivsors: Profs. Reid Simmons, Jean Oh
     * QPA: 4.0/4.0
+
+* **B.S. in Artificial Intelligence, Carnegie Mellon University**, 2024
+    * Thesis: Incorporating Instructive Feedback in Human-AI Interaction
     * Additional major in Cognitive Science
-    * Thesis (work in progress): Incorporating Instructive Feedback in Human-AI Interaction
+    * QPA: 4.0/4.0
 
 Research Experience
 ------
-* [Feb. 2021 - Present] **Reliable Autonomous Systems Lab, Carnegie Mellon University**
+* [Feb. 2021 - May 2024] **Reliable Autonomous Systems Lab, Carnegie Mellon University**
     * Advisor: Prof. Reid Simmons
     * Cognitive agents for personalization in household tasks
 * [May 2022 - Jan. 2023] **Mathis Group, École Polytechnique Fédérale de Lausanne (EPFL)**
