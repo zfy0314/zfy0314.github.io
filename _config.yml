@@ -25,9 +25,9 @@ author:
   avatar           : "gavin_profile.jpg"
   name             : "Gavin Zhu"
   pronouns         : "he/him/his"
-  bio              : "PhD Student in Robotics\nat Carnegie Mellon University"
+  bio              : "PhD Student in Robotics"
   location         : "Pittsburgh, PA, USA"
-  employer         : ""
+  employer         : "Carnegie Mellon University"
   uri              : # URL
   email            : "feiyuz@andrew.cmu.edu"
 
@@ -51,7 +51,7 @@ author:
   stackoverflow    : # User number or user number and name (i.e., use "1" or "1/jeff-atwood")
 
   # Social media
-  bluesky          : "bsky.app" # Replace this with you Bluesky username
+  bluesky          : # Replace this with you Bluesky username
   facebook         : # Username
   flickr           : # Username
   foursquare       : # Username
