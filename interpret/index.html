@@ -1,18 +1,798 @@
----
-layout: null
-permalink: /interpret/
----
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Interpret</title>
-  </head>
-  <body>
-    <header>
-      <h1>Interpret</h1>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>InterPReT: Interactive Policy Restructuring and Training</title>
+  <meta name="description" content="InterPReT helps lay users teach driving policies through iterative instructions, demonstrations, and rollout feedback.">
+  <meta property="og:title" content="InterPReT">
+  <meta property="og:description" content="Project webpage for InterPReT.">
+  <meta property="og:image" content="./resources/teaser.jpg">
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #171d28;
+      --panel-2: #121923;
+      --text: #eaf0f8;
+      --muted: #a9b3c3;
+      --line: rgba(255, 255, 255, 0.1);
+      --accent: #66b3ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #0f1115 0%, #121a26 100%);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+    }
+
+    a { color: var(--accent); }
+
+    .container {
+      width: min(980px, 92vw);
+      margin: 0 auto;
+      padding: 32px 0 64px;
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.7rem, 2.9vw, 2.5rem);
+      line-height: 1.2;
+    }
+
+    .authors {
+      margin: 0 0 12px;
+      color: var(--muted);
+    }
+
+    .links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 999px;
+      text-decoration: none;
+      border: 1px solid rgba(102, 179, 255, 0.6);
+      color: var(--accent);
+      font-size: 0.95rem;
+    }
+
+    .btn-disabled {
+      color: #9aa4b5;
+      border-color: rgba(154, 164, 181, 0.35);
+      background: rgba(154, 164, 181, 0.1);
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    section {
+      background: rgba(23, 29, 40, 0.92);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 18px;
+      margin-top: 16px;
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 1.4rem;
+    }
+
+    h3 {
+      margin: 14px 0 6px;
+      font-size: 1.07rem;
+    }
+
+    p { margin: 8px 0; }
+
+    img {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      display: block;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .tag {
+      display: inline-block;
+      margin-left: 8px;
+      font-size: 0.8rem;
+      border-radius: 999px;
+      padding: 2px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--muted);
+    }
+
+    .muted { color: var(--muted); }
+
+    .carousel-wrap { margin-top: 10px; }
+
+    .carousel-controls {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin: 0 0 8px;
+    }
+
+    .nav-btn {
+      border: 1px solid rgba(102, 179, 255, 0.5);
+      background: rgba(102, 179, 255, 0.1);
+      color: var(--accent);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.88rem;
+      cursor: pointer;
+    }
+
+    .nav-btn:disabled {
+      color: #95a0b3;
+      border-color: rgba(149, 160, 179, 0.35);
+      background: rgba(149, 160, 179, 0.12);
+      cursor: not-allowed;
+    }
+
+    .carousel-hint {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .card-carousel {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      overscroll-behavior-x: auto;
+      overscroll-behavior-y: none;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 8px;
+      transition: height 0.2s ease;
+    }
+
+    .carousel-card {
+      flex: 0 0 100%;
+      scroll-snap-align: start;
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+      overflow: visible;
+    }
+
+    .chat-row {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin: 10px 0;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: #fff;
+      flex: 0 0 42px;
+      object-fit: contain;
+      padding: 4px;
+    }
+
+    .bubble {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px 12px;
+      width: min(100%, 760px);
+      max-width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .bubble-human {
+      background: rgba(102, 179, 255, 0.12);
+      border-color: rgba(102, 179, 255, 0.3);
+    }
+
+    .bubble-robot {
+      background: rgba(111, 227, 164, 0.1);
+      border-color: rgba(111, 227, 164, 0.25);
+    }
+
+    .instruction-line {
+      display: block;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 0.9rem;
+      white-space: pre-wrap;
+      margin-top: 4px;
+    }
+
+    .bubble-media {
+      margin-top: 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      width: min(420px, 100%);
+      aspect-ratio: 3 / 2;
+      object-fit: cover;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .h1-fig-stack img + img { margin-top: 10px; }
+
+    details {
+      margin-top: 10px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.15);
+    }
+
+    summary {
+      cursor: pointer;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    pre {
+      margin: 10px 0 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      color: #dfe8f5;
+    }
+
+    code.language-python {
+      color: #d2e6ff;
+      display: block;
+    }
+
+    @media (max-width: 760px) {
+      .container { padding: 20px 0 44px; }
+      .links { gap: 8px; }
+      .btn { font-size: 0.88rem; }
+      .split { grid-template-columns: 1fr; }
+      .carousel-card { flex-basis: 94%; }
+      .carousel-controls { justify-content: space-between; }
+      .chat-row { flex-direction: column; gap: 8px; }
+      .avatar { width: 36px; height: 36px; }
+      .bubble { width: 100%; }
+      pre { font-size: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header class="hero">
+      <h1>InterPReT: Interactive Policy Restructuring and Training Enable Effective Imitation Learning from Laypersons</h1>
+      <p class="authors">
+        <a href="https://zfy0314.github.io">Gavin Zhu</a>,
+        <a href="https://www.cs.cmu.edu/~jeanoh/">Jean Oh</a>,
+        <a href="https://www.ri.cmu.edu/ri-faculty/reid-simmons/">Reid Simmons</a>
+        — Carnegie Mellon University
+      </p>
+      <div class="links">
+        <a class="btn" href="https://arxiv.org/abs/2602.04213">Paper (arXiv)</a>
+        <span class="btn btn-disabled">Code (coming soon)</span>
+        <a class="btn" href="#bibtex">BibTeX</a>
+      </div>
+      <img src="./resources/teaser.jpg" alt="Overview figure of InterPReT">
+      <p>InterPReT lets non-technical users teach control policies through a multi-turn loop: provide instructions, provide demonstrations, inspect agent behavior, and refine the next round.</p>
     </header>
-  </body>
+
+    <section>
+      <h2>Abstract</h2>
+      <p>Imitation learning has shown success in many tasks by learning from expert demonstrations. However, most existing work relies on large-scale demonstrations from technical professionals and close monitoring of the training process. These are challenging for a layperson when they want to teach the agent new skills. To lower the barrier of teaching AI agents, we propose Interactive Policy Restructuring and Training (InterPReT), which takes user instructions to continually update the policy structure and optimize its parameters to fit user demonstrations. This enables end-users to interactively give instructions and demonstrations, monitor the agent's performance, and review the agent's decision-making strategies. A user study (N=34) on teaching an AI agent to drive in a racing game confirms that our approach yields more robust policies without impairing system usability, compared to a generic imitation learning baseline, when a layperson is responsible for both giving demonstrations and determining when to stop. This shows that our method is more suitable for end-users without much technical background in machine learning to train a dependable policy.</p>
+    </section>
+
+    <section>
+      <h2>Walkthrough: Multi-turn Teaching Session</h2>
+      <div class="carousel-wrap">
+        <div class="carousel-controls">
+          <button class="nav-btn" data-target="walkthrough-carousel" data-dir="-1">← Prev</button>
+          <button class="nav-btn" data-target="walkthrough-carousel" data-dir="1">Next →</button>
+        </div>
+        <p class="carousel-hint">Swipe left/right or use the buttons to move between turns.</p>
+        <div id="walkthrough-carousel" class="card-carousel">
+          <!-- demo: 093535, rollout: 093914 -->
+          <article class="carousel-card">
+            <h3>Turn 1</h3>
+            <div class="chat-row">
+              <img class="avatar" src="./resources/icons/Human.png" alt="Human icon">
+              <div class="bubble bubble-human">
+                <strong>Participant instruction changes (verbatim)</strong>
+                <span class="instruction-line">added instruction: Keep the car straight on a straight road</span>
+                <img class="bubble-media" src="./resources/study/round1_demo.gif" alt="Turn 1 demonstration">
+              </div>
+            </div>
+            <div class="chat-row">
+              <img class="avatar" src="./resources/icons/Robot.png" alt="Robot icon">
+              <div class="bubble bubble-robot">
+                <strong>Policy rollout</strong>
+                <img class="bubble-media" src="./resources/study/round1_rollout.gif" alt="Turn 1 rollout">
+                <details>
+                  <summary>Show model summary</summary>
+                  <p class="instruction-line">The model keeps the car centered and aligned by producing a steering value from the closest lateral offset, the mean future road heading, and the car's heading. Acceleration is encouraged when there is no corner ahead and speed is low; braking is increased when a corner is ahead, when offtrack, or when speed is high. All three control outputs are linear combinations of the computed scalar features and are then clipped to their required ranges.</p>
+                </details>
+                <details>
+                  <summary>Show PyTorch model</summary>
+                  <pre><code class="language-python">import torch
+from torch import nn
+
+class RacecarPolicy(nn.Module):
+    def __init__(self):
+        super().__init__()
+        # Steering weights: steer = w_x * closest_x + w_theta * future_theta_mean + w_heading * abs_heading
+        self.w_x = nn.Parameter(torch.tensor(0.40, dtype=torch.float32))       # positive: x&gt;0 -&gt; steer right
+        self.w_theta = nn.Parameter(torch.tensor(0.30, dtype=torch.float32))   # positive: upcoming left turn -&gt; steer right to stay straight
+        self.w_heading = nn.Parameter(torch.tensor(-0.20, dtype=torch.float32))# negative: reduce steer if car already pointed that way
+
+        # Acceleration params: accel = base_accel + w_speed*(1 - speed) + w_corner_accel*(1 - any_corner)
+        self.base_accel = nn.Parameter(torch.tensor(0.20, dtype=torch.float32))
+        self.w_speed = nn.Parameter(torch.tensor(0.40, dtype=torch.float32))       # more accel when speed low
+        self.w_corner_accel = nn.Parameter(torch.tensor(0.30, dtype=torch.float32))# more accel when no corner
+
+        # Braking params: brake = base_brake + w_corner_brake*any_corner + w_offtrack*offtrack + w_speed_brake*clamp(speed-0.6,0)
+        self.base_brake = nn.Parameter(torch.tensor(0.00, dtype=torch.float32))
+        self.w_corner_brake = nn.Parameter(torch.tensor(0.40, dtype=torch.float32))
+        self.w_offtrack = nn.Parameter(torch.tensor(0.50, dtype=torch.float32))
+        self.w_speed_brake = nn.Parameter(torch.tensor(0.40, dtype=torch.float32))
+
+    def forward(self, tiles, indicators):
+        # tiles: (B, L=8, 7), indicators: (B, 7)
+        closest_x = tiles[:, 0, 0]                             # (B,)
+        future_theta_mean = torch.mean(tiles[:, :, 4], dim=1)  # (B,)
+        any_corner = (tiles[:, :, 6] &gt; 0.5).any(dim=1).float() # (B,)
+        offtrack = torch.clamp(torch.abs(closest_x) - 0.2, min=0.0)  # (B,)
+
+        speed = indicators[:, 0]       # normalized [0,1]
+        abs_heading = indicators[:, 1] # normalized [-1,1]
+
+        # Steering (no bias): keep centered and counter small heading errors
+        steer_raw = self.w_x * closest_x + self.w_theta * future_theta_mean + self.w_heading * abs_heading
+        steer = torch.clamp(steer_raw, -1.0, 1.0)
+
+        # Acceleration: prefer accelerate when no corner and speed is low
+        accel_raw = self.base_accel + self.w_speed * (1.0 - speed) + self.w_corner_accel * (1.0 - any_corner)
+        accel = torch.clamp(accel_raw, 0.0, 1.0)
+
+        # Braking: increase for corners, offtrack, or high speed
+        speed_excess = torch.clamp(speed - 0.6, min=0.0)
+        brake_raw = self.base_brake + self.w_corner_brake * any_corner + self.w_offtrack * offtrack + self.w_speed_brake * speed_excess
+        brake = torch.clamp(brake_raw, 0.0, 1.0)
+
+        output = torch.stack([steer, accel, brake], dim=1)  # (B,3)
+        return output</code></pre>
+                </details>
+              </div>
+            </div>
+          </article>
+
+          <!-- demo: 094405, rollout: 094726 -->
+          <article class="carousel-card">
+            <h3>Turn 2</h3>
+            <div class="chat-row">
+              <img class="avatar" src="./resources/icons/Human.png" alt="Human icon">
+              <div class="bubble bubble-human">
+                <strong>Participant instruction changes (verbatim)</strong>
+                <span class="instruction-line">added instruction: Slow down on curves</span>
+                <span class="instruction-line">added instruction: give gas on the staight roads</span>
+                <span class="instruction-line">added instruction: don't leave the road</span>
+                <img class="bubble-media" src="./resources/study/round2_demo.gif" alt="Turn 2 demonstration">
+              </div>
+            </div>
+            <div class="chat-row">
+              <img class="avatar" src="./resources/icons/Robot.png" alt="Robot icon">
+              <div class="bubble bubble-robot">
+                <strong>Policy rollout</strong>
+                <img class="bubble-media" src="./resources/study/round2_rollout.gif" alt="Turn 2 rollout">
+                <details>
+                  <summary>Show model summary</summary>
+                  <p class="instruction-line">The policy uses the closest tile lateral offset and the average upcoming relative heading (and its magnitude) to compute a steering correction that keeps the car centered and aligned with the road. Curvature (avg_abs_theta) and border flags reduce the target speed; when speed is below target we accelerate, when above we brake. If the car is near/over the track edge (|x_closest|&gt;0.2) both stronger steering toward center and extra braking are applied. All intermediate features are differentiable linear combos with simple nonlinearities (abs, mean, clamp).</p>
+                </details>
+                <details>
+                  <summary>Show PyTorch model</summary>
+                  <pre><code class="language-python">import torch
+from torch import nn
+
+class RacecarPolicy(nn.Module):
+    def __init__(self):
+        super().__init__()
+        # Steering weights
+        # steer_unclipped = w_x * closest_x + w_tile_theta * closest_tile_theta + w_car_theta * car_theta + steer_bias
+        self.w_x = nn.Parameter(torch.tensor(0.40, dtype=torch.float32))           # positive correlation: x -&gt; steer right
+        self.w_tile_theta = nn.Parameter(torch.tensor(-0.40, dtype=torch.float32)) # negative: tile theta positive (road left) -&gt; steer left
+        self.w_car_theta = nn.Parameter(torch.tensor(-0.20, dtype=torch.float32))  # negative: car_heading positive -&gt; reduce right steering
+        self.steer_bias = nn.Parameter(torch.tensor(0.0, dtype=torch.float32))
+
+        # Track half-width (use a parameter instead of magic literal)
+        self.track_half_width = nn.Parameter(torch.tensor(0.20, dtype=torch.float32))
+
+        # Target speed parameters
+        self.base_speed = nn.Parameter(torch.tensor(0.60, dtype=torch.float32))    # cruising speed on straight
+        self.w_border = nn.Parameter(torch.tensor(-0.40, dtype=torch.float32))     # reduce speed on sharp corners
+        self.w_theta = nn.Parameter(torch.tensor(-0.30, dtype=torch.float32))      # reduce speed when upcoming heading magnitudes are large
+        self.w_x_speed = nn.Parameter(torch.tensor(-0.30, dtype=torch.float32))   # reduce speed when far from center
+
+        # Acceleration / braking gains
+        self.accel_gain = nn.Parameter(torch.tensor(1.0, dtype=torch.float32))     # scale for accel when below target
+        self.brake_gain = nn.Parameter(torch.tensor(0.8, dtype=torch.float32))     # scale for braking when above target
+        self.off_track_brake = nn.Parameter(torch.tensor(0.8, dtype=torch.float32))# extra brake when off track
+        self.corner_brake = nn.Parameter(torch.tensor(0.4, dtype=torch.float32))   # extra braking on sharp corner
+
+    def forward(self, tiles, indicators):
+        """
+        tiles: (B, L, 7)
+        indicators: (B, 7)
+        returns: (B, 3) -&gt; [steer (-1..1), accel (0..1), brake (0..1)]
+        """
+        # Extract useful inputs
+        closest_x = tiles[:, 0, 0]                       # (B,)
+        closest_y = tiles[:, 0, 1]
+        closest_tile_theta = tiles[:, 0, 4]
+        tiles_theta_abs_mean = torch.mean(torch.abs(tiles[:, :, 4]), dim=1)
+        max_border = torch.clamp(torch.max(tiles[:, :, 6], dim=1).values, 0.0, 1.0)
+
+        speed_v = indicators[:, 0]
+        car_theta = indicators[:, 1]
+
+        abs_x = torch.abs(closest_x)
+
+        # off_track in [0,1]: 0 if within half-width, positive up to 1 when beyond
+        denom = self.track_half_width + 1e-6
+        off_track = torch.clamp((abs_x - self.track_half_width) / denom, 0.0, 1.0)
+
+        # Steering linear combination
+        steer_unclipped = (
+            self.w_x * closest_x
+            + self.w_tile_theta * closest_tile_theta
+            + self.w_car_theta * car_theta
+            + self.steer_bias
+        )
+        steer = torch.clamp(steer_unclipped, -1.0, 1.0)
+
+        # Target speed decreased for sharp corners, large heading magnitudes, and lateral offset
+        target_speed = (
+            self.base_speed
+            + self.w_border * max_border
+            + self.w_theta * tiles_theta_abs_mean
+            + self.w_x_speed * abs_x
+        )
+        # Ensure target_speed in [0,1]
+        target_speed = torch.clamp(target_speed, 0.0, 1.0)
+
+        # Raw accel / brake signals
+        accel_raw = target_speed - speed_v
+        brake_raw = (speed_v - target_speed) * self.brake_gain + off_track * self.off_track_brake + max_border * self.corner_brake
+
+        # Convert to 0..1 actions
+        accel = torch.where(accel_raw &gt; 0.0, torch.clamp(accel_raw * self.accel_gain, 0.0, 1.0), torch.zeros_like(accel_raw))
+        brake = torch.clamp(brake_raw, 0.0, 1.0)
+
+        # If off-track, suppress acceleration proportionally
+        accel = accel * (1.0 - off_track)
+
+        # Final output [steer, accel, brake]
+        output = torch.stack([steer, accel, brake], dim=1)
+        return output</code></pre>
+                </details>
+              </div>
+            </div>
+          </article>
+
+          <!-- demo: 095021, rollout: 095636 -->
+          <article class="carousel-card">
+            <h3>Turn 3</h3>
+            <div class="chat-row">
+              <img class="avatar" src="./resources/icons/Human.png" alt="Human icon">
+              <div class="bubble bubble-human">
+                <strong>Participant instruction changes (verbatim)</strong>
+                <span class="instruction-line">added instruction: brake on tight curves in the way that the car don't leave the road</span>
+                <span class="instruction-line">added instruction: never leave the road</span>
+                <img class="bubble-media" src="./resources/study/round3_demo.gif" alt="Turn 3 demonstration">
+              </div>
+            </div>
+            <div class="chat-row">
+              <img class="avatar" src="./resources/icons/Robot.png" alt="Robot icon">
+              <div class="bubble bubble-robot">
+                <strong>Policy rollout</strong>
+                <img class="bubble-media" src="./resources/study/round3_rollout.gif" alt="Turn 3 rollout">
+                <details>
+                  <summary>Show model summary</summary>
+                  <p class="instruction-line">The model determines steering from lateral offset, relative tile heading, and car heading to keep the car centered and aligned with the road. It computes a target speed that is reduced on sharp corners, for large heading curvature, and when the car is far from center. Acceleration is applied when current speed is below target; braking is applied when above target. If the car is off the road (abs_x &gt; track_half_width) brakes are elevated and acceleration suppressed to avoid leaving the road. All new internal features are linear combinations of earlier features, with learnable weights and small biases.</p>
+                </details>
+                <details>
+                  <summary>Show PyTorch model</summary>
+                  <pre><code class="language-python">import torch
+from torch import nn
+
+class RacecarPolicy(nn.Module):
+    def __init__(self):
+        super().__init__()
+        # Steering: steer = w_x * x_closest + w_theta * (-avg_theta), amplified on edges
+        self.w_x = nn.Parameter(torch.tensor(0.40, dtype=torch.float32))      # positive corr with x -&gt; steer right if x&gt;0
+        self.w_theta = nn.Parameter(torch.tensor(-0.30, dtype=torch.float32)) # negative corr: avg_theta&gt;0 (road left) -&gt; steer left (-)
+        self.k_edge_steer = nn.Parameter(torch.tensor(0.40, dtype=torch.float32))  # amplify steer when near edge
+
+        # Target speed: base_speed + w_curv*avg_abs_theta + w_border*border + w_edge_speed*edge_dist
+        self.base_speed = nn.Parameter(torch.tensor(0.40, dtype=torch.float32))   # cruising bias
+        self.w_curv = nn.Parameter(torch.tensor(-0.40, dtype=torch.float32))      # curvature reduces speed
+        self.w_border = nn.Parameter(torch.tensor(-0.40, dtype=torch.float32))    # border reduces speed
+        self.w_edge_speed = nn.Parameter(torch.tensor(-0.40, dtype=torch.float32))# edge reduces speed
+
+        # Accel / Brake scaling
+        self.accel_gain = nn.Parameter(torch.tensor(0.40, dtype=torch.float32))    # scale positive speed error
+        self.brake_gain = nn.Parameter(torch.tensor(0.40, dtype=torch.float32))    # scale negative speed error
+        self.k_brake_curv = nn.Parameter(torch.tensor(0.40, dtype=torch.float32))  # extra brake from curvature
+        self.k_brake_border = nn.Parameter(torch.tensor(0.40, dtype=torch.float32))# extra brake from border tiles
+        self.k_brake_edge = nn.Parameter(torch.tensor(0.45, dtype=torch.float32))  # extra brake when off-edge
+
+    def forward(self, tiles, indicators):
+        # tiles: (B, L=8, 7), indicators: (B, 7)
+        x_closest = tiles[:, 0, 0]                         # (B,)
+        theta_tiles = tiles[:, :, 4]                       # (B, L)
+        border_tiles = tiles[:, :, 6]                      # (B, L)
+        speed = indicators[:, 0]                           # (B,)
+
+        avg_theta = torch.mean(theta_tiles, dim=1)                         # (B,)
+        avg_abs_theta = torch.mean(torch.abs(theta_tiles), dim=1)          # (B,)
+        border_present = border_tiles.max(dim=1).values                    # (B,) 0 or 1
+
+        edge_distance = torch.clamp(torch.abs(x_closest) - 0.2, min=0.0)   # (B,)
+
+        # Steering
+        steer_base = self.w_x * x_closest + self.w_theta * (-avg_theta)    # no bias: zero inputs -&gt; zero steer
+        steer_raw = steer_base * (1.0 + self.k_edge_steer * edge_distance)
+        steer = torch.clamp(steer_raw, min=-1.0, max=1.0)
+
+        # Target speed, clamped to [0,1]
+        target_speed_unclamped = (self.base_speed
+                                  + self.w_curv * avg_abs_theta
+                                  + self.w_border * border_present
+                                  + self.w_edge_speed * edge_distance)
+        target_speed = torch.clamp(target_speed_unclamped, min=0.0, max=1.0)
+
+        # Speed error
+        speed_error = target_speed - speed
+
+        # Acceleration: positive error
+        accel_raw = self.accel_gain * torch.clamp(speed_error, min=0.0)
+        accel = torch.clamp(accel_raw, min=0.0, max=1.0)
+
+        # Brake: negative error plus curvature/border/edge braking
+        brake_from_error = self.brake_gain * torch.clamp(-speed_error, min=0.0)
+        brake_extra = (self.k_brake_curv * avg_abs_theta
+                       + self.k_brake_border * border_present
+                       + self.k_brake_edge * edge_distance)
+        brake_raw = brake_from_error + brake_extra
+        brake = torch.clamp(brake_raw, min=0.0, max=1.0)
+
+        output = torch.stack([steer, accel, brake], dim=1)  # (B,3)
+        return output</code></pre>
+                </details>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Study Setup</h2>
+      <p>We conducted an in-person between-subject user study (<strong>N=34</strong>) in a car-racing teaching task. Participants used a gamepad interface to provide demonstrations, and the experimental group also provided language instructions for restructuring.</p>
+      <p>Participants first practiced control, then repeatedly taught and evaluated policies. They could choose start conditions, provide multiple demonstrations, retrain, and test iteratively before submission.</p>
+      <img src="./resources/paper_figures/home_page.png" alt="Interface screenshot from appendix">
+      <p class="muted">Appendix interface screenshot from the paper source.</p>
+    </section>
+
+    <section>
+      <h2>Findings (Hypotheses Matched with Figures)</h2>
+      <div class="carousel-wrap">
+        <div class="carousel-controls">
+          <button class="nav-btn" data-target="findings-carousel" data-dir="-1">← Prev</button>
+          <button class="nav-btn" data-target="findings-carousel" data-dir="1">Next →</button>
+        </div>
+        <p class="carousel-hint">Swipe left/right or use the buttons to browse findings.</p>
+        <div id="findings-carousel" class="card-carousel">
+          <article class="carousel-card">
+            <h3>H1: InterPReT needs fewer demonstrations for similar nominal performance <span class="tag">Supported</span></h3>
+            <p>The paper reports equivalent nominal performance while requiring fewer demonstration steps under InterPReT. (Figure 4 + Figure 5 from the original paper)</p>
+            <div class="h1-fig-stack">
+              <img src="./resources/paper_figures/nominal_boxplot.jpg" alt="Figure 4 nominal performance boxplot">
+              <img src="./resources/paper_figures/demonstration_steps_boxplot.jpg" alt="Figure 5 demonstration steps boxplot">
+            </div>
+          </article>
+
+          <article class="carousel-card">
+            <h3>H2-H4: InterPReT is more robust on unseen tracks, edge-case starts, and noisy actions <span class="tag">Supported</span></h3>
+            <p>Across robustness conditions, InterPReT outperformed the baseline according to the mixed-effects analysis in the paper.</p>
+            <img src="./resources/paper_figures/per_run_violin_average_speed.jpg" alt="Per-run robustness results for H2-H4">
+          </article>
+
+          <article class="carousel-card">
+            <h3>H5: Users perceive InterPReT policies as better <span class="tag">Partially supported</span></h3>
+            <p>Perceived gains were significant on the seen track but not significant for unseen-track expectations.</p>
+            <img src="./resources/paper_figures/expectation_boxplot.jpg" alt="User perception results for H5">
+          </article>
+
+          <article class="carousel-card">
+            <h3>H6: Usability of InterPReT is not worse than baseline <span class="tag">Supported</span></h3>
+            <p>System usability scores were statistically non-inferior, indicating added instruction interaction did not degrade usability.</p>
+            <img src="./resources/paper_figures/sus_boxplot.jpg" alt="SUS results for H6">
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Additional Analysis</h2>
+      <div class="carousel-wrap">
+        <div class="carousel-controls">
+          <button class="nav-btn" data-target="analysis-carousel" data-dir="-1">← Prev</button>
+          <button class="nav-btn" data-target="analysis-carousel" data-dir="1">Next →</button>
+        </div>
+        <p class="carousel-hint">Swipe left/right or use the buttons to browse analysis results.</p>
+        <div id="analysis-carousel" class="card-carousel">
+          <article class="carousel-card">
+            <h3>Improvement through interactions</h3>
+            <p>The paper shows that policy performance improves over interaction rounds. This supports the multi-turn design: users can diagnose current behavior and provide targeted follow-up teaching.</p>
+            <img src="./resources/paper_figures/trend_per_participant_average_speed_single.jpg" alt="Performance trend over rounds">
+          </article>
+
+          <article class="carousel-card">
+            <h3>Handling diverse instructions</h3>
+            <p>Instruction lengths and styles varied substantially, yet generated models still captured consistent concepts (for example, staying on-road and slowing at turns). This indicates robustness to natural language variation.</p>
+            <img src="./resources/paper_figures/instruction_token_count_histogram.jpg" alt="Distribution of instruction token counts">
+            <details>
+              <summary>Show sample instructions</summary>
+              <ul>
+                <li><strong>Terse and Abstract:</strong> "Stay within the grey track"</li>
+                <li><strong>Terse and Specific:</strong> "Desired speed is 70."</li>
+                <li><strong>Verbose:</strong> "when turning prioritize the middle of the road rather than the inside of the bend. this will limit your chances of hitting grass. in general, try to stay in the middle of the road since you are surrounded by grass"</li>
+                <li><strong>Second-person:</strong> "speed up to go as fast as you can"</li>
+                <li><strong>Third-person:</strong> "Keep the car straight on a straight road"</li>
+                <li><strong>Typo:</strong> "Turn a corner"</li>
+              </ul>
+            </details>
+          </article>
+
+          <article class="carousel-card">
+            <h3>Additional ablation findings</h3>
+            <p>The full InterPReT formulation outperformed alternatives in ablation experiments, suggesting that structure adaptation and language-guided modeling both matter in this learning setup.</p>
+            <img src="./resources/paper_figures/ablation_average_speed_boxplot.jpg" alt="Ablation comparison">
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Related Work</h2>
+      <p><a href="https://arxiv.org/abs/2501.16546">[IJCAI 25] Sample-Efficient Behavior Cloning Using General Domain Knowledge</a></p>
+    </section>
+
+    <section>
+      <h2>Acknowledgements</h2>
+      <p>We would like to thank Shridhula Srinivasan and Justin Ma for their help in prototyping the user interface, experimenting with prompt engineering, and running some pilot user studies. Additional thanks to Justin for running some final studies.</p>
+      <p>This research has been partially supported by Microsoft Corporation as part of the Keio CMU partnership. And Feiyu is supported by the Softbank Group - Arm PhD Fellowship.</p>
+      <p class="muted">This webpage is created by Copilot with GPT-5.3-Codex.</p>
+    </section>
+
+    <section id="bibtex">
+      <h2>BibTeX</h2>
+      <details>
+        <summary>Show BibTeX citation</summary>
+        <pre><code>@inproceedings{10.1145/3757279.3785549,
+author = {Zhu, Feiyu Gavin and Oh, Jean and Simmons, Reid},
+title = {InterPReT: Interactive Policy Restructuring and Training Enable Effective Imitation Learning from Laypersons},
+year = {2026},
+isbn = {9798400721281},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3757279.3785549},
+doi = {10.1145/3757279.3785549},
+booktitle = {Proceedings of the 21st ACM/IEEE International Conference on Human-Robot Interaction},
+pages = {864–873},
+numpages = {10},
+keywords = {Adaptable Policy Structure, Interactive Learning, Learning from Demonstrations},
+location = {Edinburgh, Scotland, UK},
+series = {HRI '26}
+}</code></pre>
+      </details>
+    </section>
+  </main>
+
+  <script>
+    const carouselIds = ['walkthrough-carousel', 'findings-carousel', 'analysis-carousel'];
+
+    function getStep(carousel) {
+      const card = carousel.querySelector('.carousel-card');
+      const gap = parseFloat(getComputedStyle(carousel).gap || '14') || 14;
+      return card ? card.getBoundingClientRect().width + gap : carousel.clientWidth;
+    }
+
+    function getIndex(carousel) {
+      const step = getStep(carousel);
+      if (!step) return 0;
+      return Math.round(carousel.scrollLeft / step);
+    }
+
+    function updateCarouselState(carouselId) {
+      const carousel = document.getElementById(carouselId);
+      if (!carousel) return;
+      const cards = Array.from(carousel.querySelectorAll('.carousel-card'));
+      if (!cards.length) return;
+
+      const idx = Math.max(0, Math.min(cards.length - 1, getIndex(carousel)));
+      const prevBtn = document.querySelector(`.nav-btn[data-target="${carouselId}"][data-dir="-1"]`);
+      const nextBtn = document.querySelector(`.nav-btn[data-target="${carouselId}"][data-dir="1"]`);
+      if (prevBtn) prevBtn.disabled = idx === 0;
+      if (nextBtn) nextBtn.disabled = idx === cards.length - 1;
+
+      const targetHeight = cards[idx].scrollHeight;
+      carousel.style.height = `${targetHeight}px`;
+    }
+
+    function scrollCarousel(targetId, direction) {
+      const carousel = document.getElementById(targetId);
+      if (!carousel) return;
+      const delta = getStep(carousel);
+      carousel.scrollBy({ left: direction * delta, behavior: 'smooth' });
+    }
+
+    document.querySelectorAll('.nav-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-target');
+        const dir = Number(btn.getAttribute('data-dir')) || 1;
+        scrollCarousel(target, dir);
+      });
+    });
+
+    carouselIds.forEach((id) => {
+      const carousel = document.getElementById(id);
+      if (!carousel) return;
+      carousel.addEventListener('scroll', () => updateCarouselState(id), { passive: true });
+      carousel.addEventListener('wheel', (event) => {
+        if (event.ctrlKey) return;
+        const delta = event.deltaY !== 0 ? event.deltaY : event.deltaX;
+        if (delta === 0) return;
+        event.preventDefault();
+        window.scrollBy({ top: delta, left: 0, behavior: 'auto' });
+      }, { passive: false });
+      carousel.querySelectorAll('details').forEach((d) => {
+        d.addEventListener('toggle', () => updateCarouselState(id));
+      });
+      carousel.querySelectorAll('img').forEach((img) => {
+        if (!img.complete) {
+          img.addEventListener('load', () => updateCarouselState(id), { once: true });
+        }
+      });
+      if (window.ResizeObserver) {
+        const observer = new ResizeObserver(() => updateCarouselState(id));
+        carousel.querySelectorAll('.carousel-card').forEach((card) => observer.observe(card));
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      carouselIds.forEach((id) => updateCarouselState(id));
+    });
+
+    window.addEventListener('load', () => {
+      carouselIds.forEach((id) => updateCarouselState(id));
+    });
+  </script>
+</body>
 </html>

@@ -1,0 +1,17 @@
+@inproceedings{10.1145/3757279.3785549,
+author = {Zhu, Feiyu Gavin and Oh, Jean and Simmons, Reid},
+title = {InterPReT: Interactive Policy Restructuring and Training Enable Effective Imitation Learning from Laypersons},
+year = {2026},
+isbn = {9798400721281},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3757279.3785549},
+doi = {10.1145/3757279.3785549},
+abstract = {Imitation learning has shown success in many tasks by learning from expert demonstrations. However, most existing work relies on large-scale demonstrations from technical professionals and close monitoring of the training process. These are challenging for a layperson when they want to teach the agent new skills. To lower the barrier of teaching AI agents, we propose Interactive Policy Restructuring and Training (InterPReT), which takes user instructions to continually update the policy structure and optimize its parameters to fit user demonstrations. This enables end-users to interactively give instructions and demonstrations, monitor the agent's performance, and review the agent's decision-making strategies. A user study (N=34) on teaching an AI agent to drive in a racing game confirms that our approach yields more robust policies without impairing system usability, compared to a generic imitation learning baseline, when a layperson is responsible for both giving demonstrations and determining when to stop. This shows that our method is more suitable for end-users without much technical background in machine learning to train a dependable policy.},
+booktitle = {Proceedings of the 21st ACM/IEEE International Conference on Human-Robot Interaction},
+pages = {864–873},
+numpages = {10},
+keywords = {Adaptable Policy Structure, Interactive Learning, Learning from Demonstrations},
+location = {Edinburgh, Scotland, UK},
+series = {HRI '26}
+}
